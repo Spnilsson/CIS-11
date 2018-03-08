@@ -1,0 +1,60 @@
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/07/18 11:54:36
+main.asm						     Page 1 - 1
+
+
+				;reverse string
+
+				ExitProcess proto
+
+ 00000000			.data
+
+ 00000000 54 68 69 73 20	source BYTE "This is the source string",0
+	   69 73 20 74 68
+	   65 20 73 6F 75
+	   72 63 65 20 73
+	   74 72 69 6E 67
+	   00
+ 0000001A  0000001A [		target BYTE SIZEOF source DUP('#')
+	    23
+	   ]
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  BE 0000001A			 mov esi,SIZEOF source
+ 00000005  B9 0000001A			 mov ecx,SIZEOF source
+ 0000000A  BA 00000000			 mov edx, 0
+ 0000000F			MYLOOP:
+ 0000000F  8A 86 FFFFFFFF R		 mov al,[source + esi - 1]		;get a character from source
+ 00000015  88 82 0000001A R		 mov [target + edx],al			;store it in the target
+ 0000001B  FF C2			 inc edx						;move to the next character
+ 0000001D  FF CE			 dec esi
+
+ 0000001F  E2 EE			 loop MYLOOP
+
+ 00000021  E8 00000000 E		call ExitProcess
+ 00000026			main endp
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/07/18 11:54:36
+main.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000026 Public
+  MYLOOP . . . . . . . . . . . .	L 	 0000000F _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+source . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+target . . . . . . . . . . . . .	Byte	 0000001A _DATA	
+
+	   0 Warnings
+	   0 Errors
