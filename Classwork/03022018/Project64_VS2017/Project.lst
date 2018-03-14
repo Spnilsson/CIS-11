@@ -1,0 +1,73 @@
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/12/18 11:28:58
+main.asm						     Page 1 - 1
+
+
+
+
+				ExitProcess proto
+
+ 00000000			.data
+ 00000000 54 68 69 73 20	source BYTE "This is a string",0
+	   69 73 20 61 20
+	   73 74 72 69 6E
+	   67 00
+ 00000011			target BYTE SIZEOF source DUP('#')
+
+ 00000000			.code
+ 00000000			main proc
+
+					;initialize rcx SIZEOF source
+ 00000000  48/ C7 C1			mov rcx, SIZEOF source
+	   00000011
+					;initialize pointer to last character of source
+ 00000007  48/ C7 C0			mov rax, (SIZEOF source - 1)
+	   00000010
+					;initialize pointer to first character in target
+ 0000000E  48/ C7 C3			mov rbx, 0
+	   00000000
+					;start loop
+ 00000015				MYLOOP:
+
+					;grab current character in source
+ 00000015  8A 90 00000000 R		mov dl, [source + rax]
+					
+					;mov that character to current character in target
+ 0000001B  88 93 00000011 R		mov [target + rbx], dl
+					
+					;increment target pointer
+ 00000021  48/ FF C3			inc rbx
+					
+					;decrement source pointer
+ 00000024  48/ FF C8			dec rax
+
+					;end loop
+ 00000027  E2 EC			LOOP MYLOOP
+					
+ 00000029  E8 00000000 E	   call ExitProcess
+
+ 0000002E			main endp
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/12/18 11:28:58
+main.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000002E Public
+  MYLOOP . . . . . . . . . . . .	L 	 00000015 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+source . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+target . . . . . . . . . . . . .	Byte	 00000011 _DATA	
+
+	   0 Warnings
+	   0 Errors
