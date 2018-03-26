@@ -1,0 +1,114 @@
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/21/18 10:29:42
+..\..\..\Irvine\Irvine\ch05\64 bit\Lib64test.asm	     Page 1 - 1
+
+
+				; testing 64-bit Windows API			(Lib64test.asm)
+				;  Chapter 5 example
+
+				ExitProcess 	proto
+				ReadInt64       proto
+				ReadString      proto
+				WriteString		proto
+				WriteInt64		proto
+				WriteHex32		proto
+				WriteHex64		proto
+				Crlf 				proto
+
+ 00000000			.data
+ 00000000 54 65 73 74 69	message BYTE "Testing the Irvine64 library",0
+	   6E 67 20 74 68
+	   65 20 49 72 76
+	   69 6E 65 36 34
+	   20 6C 69 62 72
+	   61 72 79 00
+ 0000001D			maxval qword 9223372036854775807
+	   7FFFFFFFFFFFFFFF
+ 00000025			minval qword -9223372036854775808
+	   8000000000000000
+ 0000002D			hexval qword 0123456789ABCDEFh
+	   0123456789ABCDEF
+ 00000035  00000032 [		inbuf  BYTE  50 dup(0),0
+	    00
+	   ] 00
+ 00000068 = 00000033		inbuf_size = $ - inbuf
+
+ 00000000			.code
+ 00000000			main proc
+
+ 00000000  48/ BA			mov	  rdx,offset message
+	   0000000000000000 R
+ 0000000A  E8 00000000 E		call  WriteString
+ 0000000F  E8 00000000 E		call  Crlf
+
+ 00000014  E8 00000000 E		call  ReadInt64				; read value into rax
+ 00000019  E8 00000000 E		call  Crlf
+ 0000001E  E8 00000000 E		call  WriteInt64			; display rax 
+ 00000023  E8 00000000 E		call  Crlf
+
+				comment !
+					mov   rdx,offset inbuf
+					mov   rcx,inbuf_size
+					call  ReadString			; read a string (RAX = length)
+					call  WriteInt64			; display the string length
+					call  Crlf
+					
+					mov   rdx,offset inbuf
+					call  WriteString			; display the buffer
+					call  Crlf
+
+					mov   rax,minVal
+					call  WriteInt64
+					call  Crlf
+
+					mov   rax,maxVal
+					call  WriteInt64		; display signed value
+					call  Crlf
+
+					mov   rax,hexVal
+					call  WriteHex32		; display the lower 32 bits
+					call  Crlf
+
+					mov   rax,hexVal
+					call  WriteHex64		; display all 64 bits
+					call  Crlf
+				!
+
+ 00000028  B9 00000000			mov   ecx,0
+ 0000002D  E8 00000000 E		call  ExitProcess
+ 00000032			main endp
+
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/21/18 10:29:42
+..\..\..\Irvine\Irvine\ch05\64 bit\Lib64test.asm	     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ReadInt64  . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ReadString . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteHex32 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteHex64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteString  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000032 Public
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+hexval . . . . . . . . . . . . .	QWord	 0000002D _DATA	
+inbuf_size . . . . . . . . . . .	Number	 00000033h   
+inbuf  . . . . . . . . . . . . .	Byte	 00000035 _DATA	
+maxval . . . . . . . . . . . . .	QWord	 0000001D _DATA	
+message  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+minval . . . . . . . . . . . . .	QWord	 00000025 _DATA	
+
+	   0 Warnings
+	   0 Errors
