@@ -3,15 +3,20 @@
 ExitProcess proto
 
 .data
-sum qword 0
+
 
 .code
 main proc
-	mov	  rax,5
-	add	  rax,6
-	mov   sum,rax
+	mov	  eax,5
+	mov   ebx,6
+	mov   ecx,4
+	mov   edx,5
+	
+	add eax,ebx
+	
+	add ecx,edx
+	sub eax,ecx
 
-	mov   ecx,0
 	call  ExitProcess
 main endp
 end

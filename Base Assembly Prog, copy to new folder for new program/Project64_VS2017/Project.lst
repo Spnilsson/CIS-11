@@ -1,29 +1,22 @@
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/05/18 11:44:07
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
 main.asm						     Page 1 - 1
 
 
-				; AddTwoSum_64.asm - Chapter 3 example.
+
 
 				ExitProcess proto
 
  00000000			.data
- 00000000			sum qword 0
-	   0000000000000000
+ 00000000 FFFFFFEC		number DWORD -20
 
  00000000			.code
  00000000			main proc
- 00000000  B8 00000005		   mov  eax,5
- 00000005  BB 00000006		   mov  ebx,6
-				   ;
- 0000000A  8B C8		   mov  ecx,eax
- 0000000C  8B C3		   mov  eax,ebx
- 0000000E  8B D9		   mov  ebx,ecx
-				   ;
- 00000010  E8 00000000 E	   call ExitProcess
+ 00000000  8B 05 00000000 R		mov eax,number
+ 00000006  E8 00000000 E	   call ExitProcess
 
- 00000015			main endp
+ 0000000B			main endp
 				end
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/05/18 11:44:07
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
 main.asm						     Symbols 2 - 1
 
 
@@ -34,14 +27,14 @@ Procedures, parameters, and locals:
                 N a m e                 Type     Value    Attr
 
 ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000015 Public
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000000B Public
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
-sum  . . . . . . . . . . . . . .	QWord	 00000000 _DATA	
+number . . . . . . . . . . . . .	DWord	 00000000 _DATA	
 
 	   0 Warnings
 	   0 Errors
