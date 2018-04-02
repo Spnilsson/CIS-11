@@ -1,0 +1,67 @@
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:05:47
+main.asm						     Page 1 - 1
+
+
+
+
+				ExitProcess proto
+				WriteInt64 proto
+				Crlf proto
+
+ 00000000			.data
+
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  48/ C7 C1			mov rcx,47
+	   0000002F
+ 00000007  48/ C7 C0			mov rax,0
+	   00000000
+ 0000000E  48/ C7 C3			mov rbx,1
+	   00000001
+ 00000015  49/ C7 C0			mov r8,0
+	   00000000
+ 0000001C  49/ C7 C1			mov r9,0
+	   00000000
+					
+ 00000023			L1:
+ 00000023  4D/ 8B C1			mov r8,r9
+ 00000026  4C/ 03 C3			add r8,rbx
+ 00000029  49/ 8B C0			mov rax,r8
+
+ 0000002C  E8 00000000 E		call WriteInt64
+ 00000031  E8 00000000 E		call Crlf
+
+ 00000036  4C/ 8B CB			mov r9,rbx
+ 00000039  49/ 8B D8			mov rbx,r8
+
+
+ 0000003C  E2 E5			loop L1
+ 0000003E  E8 00000000 E	   call ExitProcess
+
+ 00000043			main endp
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:05:47
+main.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000043 Public
+  L1 . . . . . . . . . . . . . .	L 	 00000023 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+
+	   0 Warnings
+	   0 Errors
