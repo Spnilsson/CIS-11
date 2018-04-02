@@ -1,22 +1,27 @@
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:25:35
 main.asm						     Page 1 - 1
 
 
-
-
 				ExitProcess proto
+				Crlf proto
+				WriteInt64 proto
+				Random64 proto
 
  00000000			.data
- 00000000 FFFFFFEC		number DWORD -20
-
  00000000			.code
  00000000			main proc
- 00000000  8B 05 00000000 R		mov eax,number
- 00000006  E8 00000000 E	   call ExitProcess
+ 00000000  48/ C7 C1			mov rcx,100
+	   00000064
+ 00000007			L1:
+ 00000007  E8 00000000 E		call Random64
+ 0000000C  E8 00000000 E		call WriteInt64
+ 00000011  E8 00000000 E		call Crlf
+ 00000016  E2 EF			loop L1
+ 00000018  E8 00000000 E	   call ExitProcess
 
- 0000000B			main endp
+ 0000001D			main endp
 				end
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:25:35
 main.asm						     Symbols 2 - 1
 
 
@@ -26,15 +31,18 @@ Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
+Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000000B Public
+Random64 . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000001D Public
+  L1 . . . . . . . . . . . . . .	L 	 00000007 _TEXT	
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
-number . . . . . . . . . . . . .	DWord	 00000000 _DATA	
 
 	   0 Warnings
 	   0 Errors
