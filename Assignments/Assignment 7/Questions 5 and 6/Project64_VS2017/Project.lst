@@ -1,11 +1,11 @@
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   05/02/18 12:10:12
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   05/07/18 11:43:37
 main.asm						     Page 1 - 1
 
 
 				ExitProcess proto
 				Crlf proto
 				ReadString proto
-				Str_compare proto
+				ReadInt64 proto
 				WriteString proto
 				WriteHex64 proto
 
@@ -26,14 +26,9 @@ main.asm						     Page 1 - 1
 	   00
  0000003B 35 2E 20 45 78	menu5 BYTE "5. Exit",0
 	   69 74 00
- 00000043 30			entry BYTE "0"
- 00000044			answer1 QWORD "1"
-	   0000000000000031
- 0000004C 02			answer2 BYTE 2
- 0000004D 03			answer3 BYTE 3
- 0000004E 04			answer4 BYTE 4
 
- 0000004F 50 6C 65 61 73	twohexmenu BYTE "Please enter two hexadecimal integers:",0
+
+ 00000043 50 6C 65 61 73	twohexmenu BYTE "Please enter two hexadecimal integers:",0
 	   65 20 65 6E 74
 	   65 72 20 74 77
 	   6F 20 68 65 78
@@ -41,7 +36,7 @@ main.asm						     Page 1 - 1
 	   6D 61 6C 20 69
 	   6E 74 65 67 65
 	   72 73 3A 00
- 00000076 50 6C 65 61 73	onehexmenu BYTE "Please enter a hexadecimal integer:",0
+ 0000006A 50 6C 65 61 73	onehexmenu BYTE "Please enter a hexadecimal integer:",0
 	   65 20 65 6E 74
 	   65 72 20 61 20
 	   68 65 78 61 64
@@ -50,9 +45,9 @@ main.asm						     Page 1 - 1
 	   65 67 65 72 3A
 	   00
 
- 0000009A			hexentry1 QWORD "0"
+ 0000008E			hexentry1 QWORD "0"
 	   0000000000000030
- 000000A2			hexentry2 QWORD "0"
+ 00000096			hexentry2 QWORD "0"
 	   0000000000000030
 
 
@@ -89,174 +84,148 @@ main.asm						     Page 1 - 1
  0000006E  E8 00000000 E		call WriteString
  00000073  E8 00000000 E		call Crlf
 						
- 00000078  48/ C7 C1			mov rcx,2				
-	   00000002
- 0000007F  48/ BA			mov rdx,OFFSET entry
+ 00000078  48/ C7 C0			mov rax,0				
+	   00000000
+ 0000007F  E8 00000000 E		call ReadInt64
+					
+ 00000084  48/ 83 F8 01			CMP rax,1			;checks to see is the entry = 1 and if so jumps to it
+ 00000088  74 17			je c1
+					
+ 0000008A  48/ 83 F8 02			CMP rax,2			;checks to see is the entry = 2 and if so jumps to it
+ 0000008E  74 16			je c2
+					
+ 00000090  48/ 83 F8 03			CMP rax,3			;checks to see is the entry = 3 and if so jumps to it
+ 00000094  74 15			je c3
+					
+ 00000096  48/ 83 F8 04			cmp rax,4			;checks to see is the entry = 4 and if so jumps to it
+ 0000009A  74 14			je c4
+
+ 0000009C  E8 00000000 E		call ExitProcess
+
+ 000000A1				c1:
+ 000000A1  E8 0000000F			call op1
+
+ 000000A6				c2:
+ 000000A6  E8 00000062			call op2
+
+ 000000AB				c3:
+ 000000AB  E8 000000B5			call op3
+
+ 000000B0				c4:
+ 000000B0  E8 000000EE			call op4
+					
+
+ 000000B5			main endp
+
+ 000000B5			op1 proc
+ 000000B5  48/ BA			mov rdx,OFFSET twohexmenu
 	   0000000000000043 R
- 00000089  E8 00000000 E		call ReadString
-					
- 0000008E  48/ BE			mov rsi,OFFSET entry			;checks to see is the entry = 1 and if so jumps to it
+ 000000BF  E8 00000000 E		call WriteString
+ 000000C4  E8 00000000 E		call Crlf
+
+ 000000C9  48/ C7 C1			mov rcx,3				
+	   00000003
+ 000000D0  48/ BA			mov rdx,OFFSET hexentry1
+	   000000000000008E R
+ 000000DA  E8 00000000 E		call ReadString
+
+ 000000DF  48/ C7 C1			mov rcx,3
+	   00000003
+ 000000E6  48/ BA			mov rdx,OFFSET hexentry2
+	   0000000000000096 R
+ 000000F0  E8 00000000 E		call ReadString
+
+ 000000F5  48/ 8B 05			mov rax,[hexentry1]
+	   0000008E R
+
+ 000000FC  48/ 23 05			AND rax,hexentry2
+	   00000096 R
+ 00000103  E8 00000000 E		call WriteHex64
+
+ 00000108  E9 FFFFFEF3			jmp main
+ 0000010D			op1 endp
+
+ 0000010D			op2 proc
+ 0000010D  48/ BA			mov rdx,OFFSET twohexmenu
 	   0000000000000043 R
- 00000098  48/ BF			mov rdi,OFFSET answer1
-	   0000000000000044 R
- 000000A2  E8 00000000 E		call Str_compare
- 000000A7  74 47			je c1
-					
- 000000A9  48/ BE			mov rsi,OFFSET entry			;checks to see is the entry = 2 and if so jumps to it
+ 00000117  E8 00000000 E		call WriteString
+ 0000011C  E8 00000000 E		call Crlf
+
+ 00000121  48/ C7 C1			mov rcx,3				
+	   00000003
+ 00000128  48/ BA			mov rdx,OFFSET hexentry1
+	   000000000000008E R
+ 00000132  E8 00000000 E		call ReadString
+
+ 00000137  48/ C7 C1			mov rcx,3
+	   00000003
+ 0000013E  48/ BA			mov rdx,OFFSET hexentry2
+	   0000000000000096 R
+ 00000148  E8 00000000 E		call ReadString
+
+ 0000014D  48/ 8B 05			mov rax,[hexentry1]
+	   0000008E R
+
+ 00000154  48/ 0B 05			OR rax,hexentry2
+	   00000096 R
+ 0000015B  E8 00000000 E		call WriteHex64
+
+ 00000160  E9 FFFFFE9B			jmp main
+ 00000165			op2 endp
+
+ 00000165			op3 proc
+ 00000165  48/ BA			mov rdx,OFFSET onehexmenu
+	   000000000000006A R
+ 0000016F  E8 00000000 E		call WriteString
+ 00000174  E8 00000000 E		call Crlf
+
+ 00000179  48/ C7 C1			mov rcx,3				
+	   00000003
+ 00000180  48/ BA			mov rdx,OFFSET hexentry1
+	   000000000000008E R
+ 0000018A  E8 00000000 E		call ReadString
+
+ 0000018F  48/ 8B 05			MOV rax,[hexentry1]
+	   0000008E R
+
+ 00000196  48/ F7 D0			NOT rax
+ 00000199  E8 00000000 E		call WriteHex64
+
+ 0000019E  E9 FFFFFE5D			jmp main
+ 000001A3			op3 endp
+
+ 000001A3			op4 proc
+ 000001A3  48/ BA			mov rdx,OFFSET twohexmenu
 	   0000000000000043 R
- 000000B3  48/ 8B 3D			mov rdi,QWORD PTR[answer2]
-	   0000004C R
- 000000BA  E8 00000000 E		call Str_compare
- 000000BF  74 36			je c2
-					
- 000000C1  48/ 8B 35			mov rsi,QWORD PTR[entry]			;checks to see is the entry = 3 and if so jumps to it
-	   00000043 R
- 000000C8  48/ 8B 3D			mov rdi,QWORD PTR[answer3]
-	   0000004D R
- 000000CF  E8 00000000 E		call Str_compare
- 000000D4  74 28			je c3
-					
- 000000D6  48/ 8B 35			mov rsi,QWORD PTR[entry]			;checks to see is the entry = 4 and if so jumps to it
-	   00000043 R
- 000000DD  48/ 8B 3D			mov rdi,QWORD PTR[answer4]
-	   0000004E R
- 000000E4  E8 00000000 E		call Str_compare
- 000000E9  74 1A			jz c4
+ 000001AD  E8 00000000 E		call WriteString
+ 000001B2  E8 00000000 E		call Crlf
 
- 000000EB  E8 00000000 E		call ExitProcess
-
- 000000F0				c1:
- 000000F0  E8 00000017			call op1
-						
- 000000F5  E2 F9			loop c1
-
- 000000F7				c2:
- 000000F7  E8 00000068			call op2
-					
- 000000FC  E2 F9			loop c2
-
- 000000FE				c3:
- 000000FE  E8 000000B9			call op3
-					
- 00000103  E2 F9			loop c3
-
- 00000105				c4:
- 00000105  E8 000000F0			call op4
-
- 0000010A  E2 F9			loop c4
-					
-
- 0000010C			main endp
-
- 0000010C			op1 proc
- 0000010C  48/ BA			mov rdx,OFFSET twohexmenu
-	   000000000000004F R
- 00000116  E8 00000000 E		call WriteString
- 0000011B  E8 00000000 E		call Crlf
-
- 00000120  48/ C7 C1			mov rcx,3				
+ 000001B7  48/ C7 C1			mov rcx,3				
 	   00000003
- 00000127  48/ BA			mov rdx,OFFSET hexentry1
-	   000000000000009A R
- 00000131  E8 00000000 E		call ReadString
+ 000001BE  48/ BA			mov rdx,OFFSET hexentry1
+	   000000000000008E R
+ 000001C8  E8 00000000 E		call ReadString
 
- 00000136  48/ C7 C1			mov rcx,3
+ 000001CD  48/ C7 C1			mov rcx,3
 	   00000003
- 0000013D  48/ BA			mov rdx,OFFSET hexentry2
-	   00000000000000A2 R
- 00000147  E8 00000000 E		call ReadString
+ 000001D4  48/ BA			mov rdx,OFFSET hexentry2
+	   0000000000000096 R
+ 000001DE  E8 00000000 E		call ReadString
 
- 0000014C  48/ 8B 05			mov rax,[hexentry1]
-	   0000009A R
+ 000001E3  48/ 8B 05			mov rax,[hexentry1]
+	   0000008E R
 
- 00000153  48/ 23 05			AND rax,hexentry2
-	   000000A2 R
- 0000015A  E8 00000000 E		call WriteHex64
-
- 0000015F  E9 FFFFFE9C			jmp main
- 00000164			op1 endp
-
- 00000164			op2 proc
- 00000164  48/ BA			mov rdx,OFFSET twohexmenu
-	   000000000000004F R
- 0000016E  E8 00000000 E		call WriteString
- 00000173  E8 00000000 E		call Crlf
-
- 00000178  48/ C7 C1			mov rcx,3				
-	   00000003
- 0000017F  48/ BA			mov rdx,OFFSET hexentry1
-	   000000000000009A R
- 00000189  E8 00000000 E		call ReadString
-
- 0000018E  48/ C7 C1			mov rcx,3
-	   00000003
- 00000195  48/ BA			mov rdx,OFFSET hexentry2
-	   00000000000000A2 R
- 0000019F  E8 00000000 E		call ReadString
-
- 000001A4  48/ 8B 05			mov rax,[hexentry1]
-	   0000009A R
-
- 000001AB  48/ 0B 05			OR rax,hexentry2
-	   000000A2 R
- 000001B2  E8 00000000 E		call WriteHex64
-
- 000001B7  E9 FFFFFE44			jmp main
- 000001BC			op2 endp
-
- 000001BC			op3 proc
- 000001BC  48/ BA			mov rdx,OFFSET onehexmenu
-	   0000000000000076 R
- 000001C6  E8 00000000 E		call WriteString
- 000001CB  E8 00000000 E		call Crlf
-
- 000001D0  48/ C7 C1			mov rcx,3				
-	   00000003
- 000001D7  48/ BA			mov rdx,OFFSET hexentry1
-	   000000000000009A R
- 000001E1  E8 00000000 E		call ReadString
-
- 000001E6  48/ 8B 05			MOV rax,[hexentry1]
-	   0000009A R
-
- 000001ED  48/ F7 D0			NOT rax
- 000001F0  E8 00000000 E		call WriteHex64
-
- 000001F5  E9 FFFFFE06			jmp main
- 000001FA			op3 endp
-
- 000001FA			op4 proc
- 000001FA  48/ BA			mov rdx,OFFSET twohexmenu
-	   000000000000004F R
- 00000204  E8 00000000 E		call WriteString
- 00000209  E8 00000000 E		call Crlf
-
- 0000020E  48/ C7 C1			mov rcx,3				
-	   00000003
- 00000215  48/ BA			mov rdx,OFFSET hexentry1
-	   000000000000009A R
- 0000021F  E8 00000000 E		call ReadString
-
- 00000224  48/ C7 C1			mov rcx,3
-	   00000003
- 0000022B  48/ BA			mov rdx,OFFSET hexentry2
-	   00000000000000A2 R
- 00000235  E8 00000000 E		call ReadString
-
- 0000023A  48/ 8B 05			mov rax,[hexentry1]
-	   0000009A R
-
- 00000241  48/ 33 05			XOR rax,hexentry2
-	   000000A2 R
- 00000248  E8 00000000 E		call WriteHex64
+ 000001EA  48/ 33 05			XOR rax,hexentry2
+	   00000096 R
+ 000001F1  E8 00000000 E		call WriteHex64
 
 
- 0000024D  E9 FFFFFDAE			jmp main
- 00000252			op4 endp
+ 000001F6  E9 FFFFFE05			jmp main
+ 000001FB			op4 endp
 
 
 				end
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   05/02/18 12:10:12
+Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   05/07/18 11:43:37
 main.asm						     Symbols 2 - 1
 
 
@@ -268,40 +237,35 @@ Procedures, parameters, and locals:
 
 Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ReadInt64  . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 ReadString . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-Str_compare  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 WriteHex64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 WriteString  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000010C Public
-  c1 . . . . . . . . . . . . . .	L 	 000000F0 _TEXT	
-  c2 . . . . . . . . . . . . . .	L 	 000000F7 _TEXT	
-  c3 . . . . . . . . . . . . . .	L 	 000000FE _TEXT	
-  c4 . . . . . . . . . . . . . .	L 	 00000105 _TEXT	
-op1  . . . . . . . . . . . . . .	P 	 0000010C _TEXT	Length= 00000058 Public
-op2  . . . . . . . . . . . . . .	P 	 00000164 _TEXT	Length= 00000058 Public
-op3  . . . . . . . . . . . . . .	P 	 000001BC _TEXT	Length= 0000003E Public
-op4  . . . . . . . . . . . . . .	P 	 000001FA _TEXT	Length= 00000058 Public
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 000000B5 Public
+  c1 . . . . . . . . . . . . . .	L 	 000000A1 _TEXT	
+  c2 . . . . . . . . . . . . . .	L 	 000000A6 _TEXT	
+  c3 . . . . . . . . . . . . . .	L 	 000000AB _TEXT	
+  c4 . . . . . . . . . . . . . .	L 	 000000B0 _TEXT	
+op1  . . . . . . . . . . . . . .	P 	 000000B5 _TEXT	Length= 00000058 Public
+op2  . . . . . . . . . . . . . .	P 	 0000010D _TEXT	Length= 00000058 Public
+op3  . . . . . . . . . . . . . .	P 	 00000165 _TEXT	Length= 0000003E Public
+op4  . . . . . . . . . . . . . .	P 	 000001A3 _TEXT	Length= 00000058 Public
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
-answer1  . . . . . . . . . . . .	QWord	 00000044 _DATA	
-answer2  . . . . . . . . . . . .	Byte	 0000004C _DATA	
-answer3  . . . . . . . . . . . .	Byte	 0000004D _DATA	
-answer4  . . . . . . . . . . . .	Byte	 0000004E _DATA	
-entry  . . . . . . . . . . . . .	Byte	 00000043 _DATA	
-hexentry1  . . . . . . . . . . .	QWord	 0000009A _DATA	
-hexentry2  . . . . . . . . . . .	QWord	 000000A2 _DATA	
+hexentry1  . . . . . . . . . . .	QWord	 0000008E _DATA	
+hexentry2  . . . . . . . . . . .	QWord	 00000096 _DATA	
 menu0  . . . . . . . . . . . . .	Byte	 00000000 _DATA	
 menu1  . . . . . . . . . . . . .	Byte	 00000012 _DATA	
 menu2  . . . . . . . . . . . . .	Byte	 0000001D _DATA	
 menu3  . . . . . . . . . . . . .	Byte	 00000027 _DATA	
 menu4  . . . . . . . . . . . . .	Byte	 00000030 _DATA	
 menu5  . . . . . . . . . . . . .	Byte	 0000003B _DATA	
-onehexmenu . . . . . . . . . . .	Byte	 00000076 _DATA	
-twohexmenu . . . . . . . . . . .	Byte	 0000004F _DATA	
+onehexmenu . . . . . . . . . . .	Byte	 0000006A _DATA	
+twohexmenu . . . . . . . . . . .	Byte	 00000043 _DATA	
 
 	   0 Warnings
 	   0 Errors

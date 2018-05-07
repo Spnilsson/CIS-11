@@ -52,38 +52,30 @@ main proc
 	call ReadInt64
 	
 	CMP rax,1			;checks to see is the entry = 1 and if so jumps to it
-	jz c1
+	je c1
 	
 	CMP rax,2			;checks to see is the entry = 2 and if so jumps to it
-	jz c2
+	je c2
 	
 	CMP rax,3			;checks to see is the entry = 3 and if so jumps to it
-	jz c3
+	je c3
 	
-	mov rsi,QWORD PTR[entry]			;checks to see is the entry = 4 and if so jumps to it
-	jz c4
+	cmp rax,4			;checks to see is the entry = 4 and if so jumps to it
+	je c4
 
 	call ExitProcess
 
 	c1:
 	call op1
-		
-	loop c1
 
 	c2:
 	call op2
-	
-	loop c2
 
 	c3:
 	call op3
-	
-	loop c3
 
 	c4:
 	call op4
-
-	loop c4
 	
 
 main endp
@@ -96,15 +88,18 @@ op1 proc
 	mov rcx,3				
 	mov rdx,OFFSET hexentry1
 	call ReadString
+	call Crlf
 
 	mov rcx,3
 	mov rdx,OFFSET hexentry2
 	call ReadString
+	call Crlf
 
 	mov rax,[hexentry1]
 
 	AND rax,hexentry2
 	call WriteHex64
+	call Crlf
 
 	jmp main
 op1 endp
@@ -117,15 +112,18 @@ op2 proc
 	mov rcx,3				
 	mov rdx,OFFSET hexentry1
 	call ReadString
+	call Crlf
 
 	mov rcx,3
 	mov rdx,OFFSET hexentry2
 	call ReadString
+	call Crlf
 
 	mov rax,[hexentry1]
 
 	OR rax,hexentry2
 	call WriteHex64
+	call Crlf
 
 	jmp main
 op2 endp
@@ -138,11 +136,13 @@ op3 proc
 	mov rcx,3				
 	mov rdx,OFFSET hexentry1
 	call ReadString
+	call Crlf
 
 	MOV rax,[hexentry1]
 
 	NOT rax
 	call WriteHex64
+	call Crlf
 
 	jmp main
 op3 endp
@@ -155,15 +155,18 @@ op4 proc
 	mov rcx,3				
 	mov rdx,OFFSET hexentry1
 	call ReadString
+	call Crlf
 
 	mov rcx,3
 	mov rdx,OFFSET hexentry2
 	call ReadString
+	call Crlf
 
 	mov rax,[hexentry1]
 
 	XOR rax,hexentry2
 	call WriteHex64
+	call Crlf
 
 
 	jmp main
