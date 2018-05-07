@@ -1,7 +1,7 @@
 ExitProcess proto
 Crlf proto
 ReadString proto
-Str_compare proto
+ReadInt64 proto
 WriteString proto
 WriteHex64 proto
 
@@ -12,11 +12,7 @@ menu2 BYTE "2. x OR y",0
 menu3 BYTE "3. NOT x",0
 menu4 BYTE "4. x XOR y",0
 menu5 BYTE "5. Exit",0
-entry QWORD "0"
-answer1 QWORD "1"
-answer2 QWORD "2"
-answer3 QWORD "3"
-answer4 QWORD "4"
+
 
 twohexmenu BYTE "Please enter two hexadecimal integers:",0
 onehexmenu BYTE "Please enter a hexadecimal integer:",0
@@ -52,28 +48,19 @@ main proc
 	call WriteString
 	call Crlf
 		
-	mov rcx,2				
-	mov rdx,OFFSET entry
-	call ReadString
+	mov rax,0				
+	call ReadInt64
 	
-	mov rsi,[entry]			;checks to see is the entry = 1 and if so jumps to it
-	mov rdi,[answer1]
-	call Str_compare
+	CMP rax,1			;checks to see is the entry = 1 and if so jumps to it
 	jz c1
 	
-	mov rsi,[entry]			;checks to see is the entry = 2 and if so jumps to it
-	mov rdi,[answer2]
-	call Str_compare
+	CMP rax,2			;checks to see is the entry = 2 and if so jumps to it
 	jz c2
 	
-	mov rsi,[entry]			;checks to see is the entry = 3 and if so jumps to it
-	mov rdi,[answer3]
-	call Str_compare
+	CMP rax,3			;checks to see is the entry = 3 and if so jumps to it
 	jz c3
 	
-	mov rsi,[entry]			;checks to see is the entry = 4 and if so jumps to it
-	mov rdi,[answer4]
-	call Str_compare
+	mov rsi,QWORD PTR[entry]			;checks to see is the entry = 4 and if so jumps to it
 	jz c4
 
 	call ExitProcess
