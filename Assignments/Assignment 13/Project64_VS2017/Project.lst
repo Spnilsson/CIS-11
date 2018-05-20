@@ -1,0 +1,117 @@
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/20/18 12:21:48
+main.asm						     Page 1 - 1
+
+
+				ExitProcess proto
+				WriteInt64 proto
+				Crlf proto
+
+ 00000000			.data
+ 00000000			myArray QWORD 5,1,4,2,8
+	   0000000000000005
+	   0000000000000001
+	   0000000000000004
+	   0000000000000002
+	   0000000000000008
+
+ 00000000			.code
+ 00000000			main proc
+
+					;print array
+ 00000000  48/ C7 C1			mov rcx, LENGTHOF myArray
+	   00000005
+ 00000007  48/ C7 C6			mov rsi, 0
+	   00000000
+ 0000000E				LOOOOP:
+ 0000000E  48/ 8B 04 F5				mov rax, myArray[rsi * 8]		
+	   00000000 R
+ 00000016  E8 00000000 E			call WriteInt64
+ 0000001B  48/ FF C6				inc rsi
+ 0000001E  E2 EE			LOOP LOOOOP
+ 00000020  E8 00000000 E		call Crlf
+					
+					;bubble sort
+ 00000025  48/ C7 C1			mov rcx, LENGTHOF myArray
+	   00000005
+					
+ 0000002C				OUTLOOP:
+					
+ 0000002C  4C/ 8B F9				mov r15,rcx
+ 0000002F  48/ C7 C1				mov rcx, LENGTHOF myArray
+	   00000005
+ 00000036  48/ FF C9				dec rcx
+ 00000039  48/ C7 C6				mov rsi,0
+	   00000000
+ 00000040					BUBLOOP:
+ 00000040  4C/ 8B 0C F5					mov r9,myArray[rsi * 8]
+	   00000000 R
+ 00000048  48/ FF C6					inc rsi
+ 0000004B  4C/ 8B 14 F5					mov r10,myArray[rsi * 8]
+	   00000000 R
+							
+ 00000053  4D/ 3B CA					CMP r9,r10
+ 00000056  7E 19					jle ENDLOOP
+							
+ 00000058						SWAP:
+ 00000058  4D/ 8B D9						mov r11,r9
+ 0000005B  48/ FF CE						dec rsi
+ 0000005E  4C/ 89 14 F5						mov myArray[rsi * 8],r10
+	   00000000 R
+ 00000066  48/ FF C6						inc rsi
+ 00000069  4C/ 89 2C F5						mov myArray[rsi * 8],r13
+	   00000000 R
+								
+ 00000071						ENDLOOP:
+								
+ 00000071  E2 CD				LOOP BUBLOOP
+						
+ 00000073  49/ 8B CF				mov rcx,r15
+					
+ 00000076  E2 B4			LOOP OUTLOOP
+					
+					;print array
+ 00000078  48/ C7 C1			mov rcx, LENGTHOF myArray
+	   00000005
+ 0000007F  48/ C7 C6			mov rsi, 0
+	   00000000
+					LOOOOP:
+main.asm(56) : error A2005:symbol redefinition : LOOOOP
+ 00000086  48/ 8B 04 F5				mov rax, myArray[rsi * 8]
+	   00000000 R
+ 0000008E  E8 00000000 E			call WriteInt64
+ 00000093  48/ FF C6				inc rsi
+ 00000096  E2 00			LOOP LOOOOP
+					
+ 00000098  E8 00000000 E		call ExitProcess
+
+ 0000009D			main endp
+				end
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/20/18 12:21:48
+main.asm						     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000009D Public
+  LOOOOP . . . . . . . . . . . .	L 	 0000000E _TEXT	
+  OUTLOOP  . . . . . . . . . . .	L 	 0000002C _TEXT	
+  BUBLOOP  . . . . . . . . . . .	L 	 00000040 _TEXT	
+  SWAP . . . . . . . . . . . . .	L 	 00000058 _TEXT	
+  ENDLOOP  . . . . . . . . . . .	L 	 00000071 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+myArray  . . . . . . . . . . . .	QWord	 00000000 _DATA	
+
+	   0 Warnings
+	   1 Errors

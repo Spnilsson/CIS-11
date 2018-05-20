@@ -1,0 +1,6 @@
+﻿1>------ Build started: Project: Project, Configuration: Debug x64 ------
+1>Assembling main.asm...
+1>main.asm(56): error A2005: symbol redefinition : LOOOOP
+1>C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\BuildCustomizations\masm.targets(69,5): error MSB3721: The command "ml64.exe /c /nologo /Zi /Fo"x64\Debug\main.obj" /Fl"Project.lst" /I "c:\Irvine" /W3 /errorReport:prompt  /Tamain.asm" exited with code 1.
+1>Done building project "Project64_VS2015.vcxproj" -- FAILED.
+========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
