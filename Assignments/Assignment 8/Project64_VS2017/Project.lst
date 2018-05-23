@@ -1,22 +1,65 @@
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/23/18 11:05:55
 main.asm						     Page 1 - 1
 
 
-
-
 				ExitProcess proto
+				WriteInt64 proto
+				Crlf proto
 
  00000000			.data
- 00000000 FFFFFFEC		number DWORD -20
+ 00000000 FFFFFFFE		decCon1 DWORD  11111111111111111111111111111110b
+ 00000004 FFFFFFFE		decCon2 SDWORD 11111111111111111111111111111110b
+ 00000008 000000FE		decCon3 DWORD  00000000000000000000000011111110b
+ 0000000C 000000FE		decCon4 SDWORD 00000000000000000000000011111110b
 
  00000000			.code
  00000000			main proc
- 00000000  8B 05 00000000 R		mov eax,number
- 00000006  E8 00000000 E	   call ExitProcess
+ 00000000  48/ C7 C1			mov rcx,SIZEOF decCon1
+	   00000004
+ 00000007				CONVER1:
+						
+ 00000007  E2 FE			loop CONVER1
 
- 0000000B			main endp
+ 00000009  E8 00000000 E		call WriteInt64		;prints the converted number, used after each loop
+ 0000000E  E8 00000000 E		call Crlf
+					
+ 00000013  48/ C7 C0			mov rax,0	;reset rax
+	   00000000
+ 0000001A  48/ C7 C1			mov rcx,32
+	   00000020
+ 00000021				CONVER2:
+						
+ 00000021  E2 FE			loop CONVER2
+
+ 00000023  E8 00000000 E		call WriteInt64		;prints the converted number, used after each loop
+ 00000028  E8 00000000 E		call Crlf
+
+ 0000002D  48/ C7 C0			mov rax,0
+	   00000000
+ 00000034  48/ C7 C1			mov rcx,32
+	   00000020
+ 0000003B				CONVER3:
+						
+ 0000003B  E2 FE			loop CONVER3
+
+ 0000003D  E8 00000000 E		call WriteInt64		;prints the converted number, used after each loop
+ 00000042  E8 00000000 E		call Crlf
+
+ 00000047  48/ C7 C0			mov rax,0
+	   00000000
+ 0000004E  48/ C7 C1			mov rcx,32
+	   00000020
+ 00000055				CONVER4:
+						
+ 00000055  E2 FE			loop COnVER4
+
+ 00000057  E8 00000000 E		call WriteInt64		;prints the converted number, used after each loop
+ 0000005C  E8 00000000 E		call Crlf
+
+ 00000061  E8 00000000 E		call ExitProcess
+ 00000066			main endp
 				end
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   03/26/18 11:16:04
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/23/18 11:05:55
 main.asm						     Symbols 2 - 1
 
 
@@ -26,15 +69,24 @@ Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
+Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000000B Public
+WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000066 Public
+  CONVER1  . . . . . . . . . . .	L 	 00000007 _TEXT	
+  CONVER2  . . . . . . . . . . .	L 	 00000021 _TEXT	
+  CONVER3  . . . . . . . . . . .	L 	 0000003B _TEXT	
+  CONVER4  . . . . . . . . . . .	L 	 00000055 _TEXT	
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
-number . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+decCon1  . . . . . . . . . . . .	DWord	 00000000 _DATA	
+decCon2  . . . . . . . . . . . .	DWord	 00000004 _DATA	
+decCon3  . . . . . . . . . . . .	DWord	 00000008 _DATA	
+decCon4  . . . . . . . . . . . .	DWord	 0000000C _DATA	
 
 	   0 Warnings
 	   0 Errors
