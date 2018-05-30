@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:05:47
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/30/18 11:16:23
 main.asm						     Page 1 - 1
 
 
@@ -9,39 +9,50 @@ main.asm						     Page 1 - 1
 				Crlf proto
 
  00000000			.data
+ 00000000  0000002F [		fibonacci QWORD 47 DUP(?)
+	    0000000000000000
+	   ]
 
 
  00000000			.code
  00000000			main proc
- 00000000  48/ C7 C1			mov rcx,47
+ 00000000  48/ BE			mov rsi, OFFSET fibonacci
+	   0000000000000000 R
+ 0000000A  48/ C7 C1			mov rcx,47
 	   0000002F
- 00000007  48/ C7 C0			mov rax,0
+ 00000011  48/ C7 C0			mov rax,0
 	   00000000
- 0000000E  48/ C7 C3			mov rbx,1
+ 00000018  E8 00000000 E		call WriteInt64
+ 0000001D  E8 00000000 E		call Crlf
+
+ 00000022  48/ 89 06			mov [rsi],rax
+ 00000025  48/ 83 C6 08			add rsi, TYPE fibonacci
+
+ 00000029  48/ C7 C0			mov rax,1
 	   00000001
- 00000015  49/ C7 C0			mov r8,0
-	   00000000
- 0000001C  49/ C7 C1			mov r9,0
-	   00000000
+ 00000030  E8 00000000 E		call WriteInt64
+ 00000035  E8 00000000 E		call Crlf
 					
- 00000023			L1:
- 00000023  4D/ 8B C1			mov r8,r9
- 00000026  4C/ 03 C3			add r8,rbx
- 00000029  49/ 8B C0			mov rax,r8
+ 0000003A  48/ 89 06			mov [rsi],rax
+ 0000003D  48/ 83 C6 08			add rsi, TYPE fibonacci
 
- 0000002C  E8 00000000 E		call WriteInt64
- 00000031  E8 00000000 E		call Crlf
+ 00000041			L1:
+ 00000041  48/ 8B 56 F0			mov rdx, [rsi-16]
+ 00000045  48/ 8B 5E F8			mov rbx, [rsi-8]
 
- 00000036  4C/ 8B CB			mov r9,rbx
- 00000039  49/ 8B D8			mov rbx,r8
+ 00000049  48/ 8B C2			mov rax, rdx
+ 0000004C  48/ 03 C3			add rax, rbx
+ 0000004F  48/ 89 06			mov [rsi],rax
+ 00000052  48/ 83 C6 08			add rsi, TYPE fibonacci
+ 00000056  E8 00000000 E		call WriteInt64
+ 0000005B  E8 00000000 E		call Crlf
+					
+ 00000060  E2 DF			loop L1
+ 00000062  E8 00000000 E		call ExitProcess
 
-
- 0000003C  E2 E5			loop L1
- 0000003E  E8 00000000 E	   call ExitProcess
-
- 00000043			main endp
+ 00000067			main endp
 				end
-Microsoft (R) Macro Assembler (x64) Version 14.12.25835.0   04/02/18 11:05:47
+Microsoft (R) Macro Assembler (x64) Version 14.14.26428.1   05/30/18 11:16:23
 main.asm						     Symbols 2 - 1
 
 
@@ -54,14 +65,15 @@ Procedures, parameters, and locals:
 Crlf . . . . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 ExitProcess  . . . . . . . . . .	P 	 00000000 Length= 00000000 External
 WriteInt64 . . . . . . . . . . .	P 	 00000000 Length= 00000000 External
-main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000043 Public
-  L1 . . . . . . . . . . . . . .	L 	 00000023 _TEXT	
+main . . . . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 00000067 Public
+  L1 . . . . . . . . . . . . . .	L 	 00000041 _TEXT	
 
 
 Symbols:
 
                 N a m e                 Type     Value    Attr
 
+fibonacci  . . . . . . . . . . .	QWord	 00000000 _DATA	
 
 	   0 Warnings
 	   0 Errors
